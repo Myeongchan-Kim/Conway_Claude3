@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conway's Game of Life</title>
+  <style>
+    .cell {
+      width: 10px;
+      height: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+    }
+    .alive {
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+  
+  <script>
+    const gridSize = 50;
+    const grid = document.getElementById('grid');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    let cells = [];
+    let intervalId;
+
+    // Create the grid
+    for (let i = 0; i < gridSize; i++) {
+      cells[i] = [];
+      for (let j = 0; j < gridSize; j++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.row = i;
+        cell.dataset.col = j;
+        cell.addEventListener('click', toggleCell);
+        grid.appendChild(cell);
+        cells[i][j] = cell;
+      }
+      grid.appendChild(document.createElement('br'));
+    }
+
+    // Toggle cell state on click
+    function toggleCell() {
+      this.classList.toggle('alive');
+    }
+
+    // Start the game
+    function startGame() {
+      intervalId = setInterval(updateGrid, 100);
+    }
+
+    // Stop the game
+    function stopGame() {
+      clearInterval(intervalId);
+    }
+
+    // Update the grid
+    function updateGrid() {
+      const newCells = [];
+      for (let i = 0; i < gridSize; i++) {
+        newCells[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+          const aliveNeighbors = countAliveNeighbors(i, j);
+          if (cells[i][j].classList.contains('alive')) {
+            newCells[i][j] = aliveNeighbors === 2 || aliveNeighbors === 3;
+          } else {
+            newCells[i][j] = aliveNeighbors === 3;
+          }
+        }
+      }
+      updateCellStates(newCells);
+    }
+
+    // Count alive neighbors
+    function countAliveNeighbors(row, col) {
+      let count = 0;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue;
+          const newRow = row + i;
+          const newCol = col + j;
+          if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
+            if (cells[newRow][newCol].classList.contains('alive')) {
+              count++;
+            }
+          }
+        }
+      }
+      return count;
+    }
+
+    // Update cell states
+    function updateCellStates(newCells) {
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          cells[i][j].classList.toggle('alive', newCells[i][j]);
+        }
+      }
+    }
+
+    startBtn.addEventListener('click', startGame);
+    stopBtn.addEventListener('click', stopGame);
+  </script>
+</body>
+</html>
