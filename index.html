@@ -3,6 +3,12 @@
 <head>
   <title>Conway's Game of Life</title>
   <style>
+    .container {
+      display: flex;
+    }
+    .game {
+      margin-right: 20px;
+    }
     .cell {
       width: 10px;
       height: 10px;
@@ -12,12 +18,37 @@
     .alive {
       background-color: #000;
     }
+    .description {
+      max-width: 300px;
+    }
   </style>
 </head>
 <body>
-  <div id="grid"></div>
-  <button id="startBtn">Start</button>
-  <button id="stopBtn">Stop</button>
+  <div class="container">
+    <div class="game">
+      <div id="grid"></div>
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+    </div>
+    <div class="description">
+      <h2>Conway's Game of Life</h2>
+      <p>
+        Conway's Game of Life is a cellular automaton simulation invented by mathematician John Conway in 1970. It consists of a grid of cells that can be in one of two states: alive or dead.
+      </p>
+      <p>
+        The game evolves in generations based on the following rules:
+      </p>
+      <ul>
+        <li>Any live cell with fewer than two live neighbors dies, as if by underpopulation.</li>
+        <li>Any live cell with two or three live neighbors lives on to the next generation.</li>
+        <li>Any live cell with more than three live neighbors dies, as if by overpopulation.</li>
+        <li>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.</li>
+      </ul>
+      <p>
+        Click on the cells to toggle their state between alive and dead. Press the "Start" button to begin the simulation and watch the patterns evolve over generations. Press the "Stop" button to pause the simulation.
+      </p>
+    </div>
+  </div>
   
   <script>
     const gridSize = 50;
